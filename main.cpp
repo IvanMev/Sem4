@@ -1,33 +1,38 @@
-#include <algorithm>
-#include <fstream>
 #include <iostream>
-#include <iterator>
-#include <string>
+#include <deque>
+using namespace std;
 
 int main() {
-    std::string name;
-    int n = 0;
+    setlocale(LC_ALL, "RU");
+    deque<int> D;
+    int n;
 
-    std::cout << "Enter file name: ";
-    std::cin >> name;
-    std::cout << "Enter N (1..26): ";
-    std::cin >> n;
-
-    if (!std::cin || n < 1 || n > 26) {
-        std::cerr << "Invalid N. Expected integer in range 1..26.\n";
-        return 1;
+    cout << "Введите четное количество элементов дека: ";
+    if (!(cin >> n) || n <= 0 || n % 2 != 0) {
+        cout << "Размер должен быть положительным и четным." << endl;
+        return 0;
     }
 
-    std::ofstream out(name);
-    if (!out) {
-        std::cerr << "Cannot open file: " << name << '\n';
-        return 1;
+    cout << "Введите " << n << " элементов:" << endl;
+    for (int i = 0; i < n; ++i) {
+        int x;
+        cin >> x;
+        D.push_back(x);
     }
 
-    char next = 'A';
-    std::generate_n(std::ostream_iterator<char>(out, " "), n, [&next]() {
-        return next++;
-    });
+    int N = static_cast<int>(D.size());
+    deque<int>::iterator i = D.begin() + N / 2;
+
+    for (int k = 0; k < N / 2; ++k) {
+        i = D.insert(--i, -1);
+    }
+
+    cout << "Результат:" << endl;
+    for (int x : D) {
+        cout << x << ' ';
+    }
+    cout << endl;
 
     return 0;
 }
+
