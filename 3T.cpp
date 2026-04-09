@@ -1,4 +1,4 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include <map>
 #include <vector>
 
@@ -7,11 +7,11 @@ int main() {
     std::vector<int> v;
     int n = 0;
 
-    std::cout << "Ââåäèòå ÷èñëî ýëåìåíòîâ:  ";
+    std::cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ‡Ð¸ÑÐ»Ð¾ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð²:  ";
     std::cin >> n;
 
     v.resize(n);
-    std::cout << "Ââåäèòå ýëåìåíòû: ";
+    std::cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ñ‹: ";
     for (std::vector<int>::iterator it = v.begin(); it != v.end(); ++it) {
         std::cin >> *it;
     }
@@ -21,7 +21,7 @@ int main() {
         m[*it]++;
     }
 
-    std::cout << "Âûâîä: \n";
+    std::cout << "Ð’Ñ‹Ð²Ð¾Ð´: \n";
     for (std::map<int, int>::iterator it = m.begin(); it != m.end(); ++it) {
         std::cout << it->first << ' ' << it->second << '\n';
     }
