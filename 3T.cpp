@@ -1,6 +1,8 @@
 ﻿#include <iostream>
 #include <map>
 #include <vector>
+#include <iterator>
+#include <algorithm>
 
 int main() {
     setlocale(LC_ALL, "RU");
@@ -10,11 +12,8 @@ int main() {
     std::cout << "Введите число элементов:  ";
     std::cin >> n;
 
-    v.resize(n);
     std::cout << "Введите элементы: ";
-    for (std::vector<int>::iterator it = v.begin(); it != v.end(); ++it) {
-        std::cin >> *it;
-    }
+    std::copy_n(std::istream_iterator<int>(std::cin), n, std::back_inserter(v));
 
     std::map<int, int> m;
     for (std::vector<int>::iterator it = v.begin(); it != v.end(); ++it) {
