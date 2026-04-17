@@ -1,26 +1,22 @@
-#include <iostream>
+﻿#include <iostream>
 #include <deque>
+#include <iterator>
+#include <algorithm>
 using namespace std;
 
 int main() {
     setlocale(LC_ALL, "RU");
     deque<int> D;
-    int n;
+    
+    cout << "Введите элементы дека:" << endl;
+    copy(istream_iterator<int>(cin), istream_iterator<int>(), back_inserter(D));
 
-    cout << "Введите четное количество элементов дека: ";
-    if (!(cin >> n) || n <= 0 || n % 2 != 0) {
-        cout << "Размер должен быть положительным и четным." << endl;
+    int N = static_cast<int>(D.size());
+    if (N == 0 || N % 2 != 0) {
+        cout << "Количество элементов должно быть положительным и четным." << endl;
         return 0;
     }
 
-    cout << "Введите " << n << " элементов:" << endl;
-    for (int i = 0; i < n; ++i) {
-        int x;
-        cin >> x;
-        D.push_back(x);
-    }
-
-    int N = static_cast<int>(D.size());
     deque<int>::iterator i = D.begin() + N / 2;
 
     for (int k = 0; k < N / 2; ++k) {
