@@ -3,6 +3,7 @@
 #include <functional>
 #include <iostream>
 #include <random>
+#include <sstream>
 #include <vector>
 
 struct less_abs : std::binary_function<int, int, bool> {
@@ -21,6 +22,10 @@ static void print_vector(const std::vector<int>& v) {
 int main() {
     setlocale(LC_ALL, "RU");
     std::vector<int> V;
+    enum InputMode {
+        keyboard = 1,
+        random_generated = 2
+    };
 
     std::cout
         << "Способ задания вектора:\n"
@@ -31,18 +36,19 @@ int main() {
     int mode = 0;
     std::cin >> mode;
 
-    if (mode == 1) {
-        std::size_t n = 0;
-        std::cout << "Количество элементов: ";
-        std::cin >> n;
-        V.reserve(n);
-        std::cout << "Введите " << n << " целых чисел через пробел или перевод строки:\n";
-        for (std::size_t i = 0; i < n; ++i) {
-            int x = 0;
-            std::cin >> x;
+    switch (mode) {
+    case keyboard: {
+        std::cout << "Введите целые числа через пробел\n";
+        std::string line;
+        std::getline(std::cin >> std::ws, line);
+        std::istringstream iss(line);
+        int x = 0;
+        while (iss >> x) {
             V.push_back(x);
         }
-    } else if (mode == 2) {
+        break;
+    }
+    case random_generated: {
         std::size_t n = 0;
         int lo = 0;
         int hi = 0;
@@ -60,7 +66,9 @@ int main() {
         for (std::size_t i = 0; i < n; ++i) {
             V.push_back(dist(gen));
         }
-    } else {
+        break;
+    }
+    default:
         std::cout << "Неизвестный вариант.\n";
         return 1;
     }
