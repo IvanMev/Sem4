@@ -5,50 +5,70 @@
 #include <random>
 #include <sstream>
 #include <vector>
+#include <iterator>
 
+/**
+ * @struct less_abs
+ * @brief Функтор для сравнения двух чисел по их абсолютному значению.
+ */
 struct less_abs : std::binary_function<int, int, bool> {
+    /**
+     * @brief Сравнивает модули двух целых чисел.
+     * @param a Первое число
+     * @param b Второе число
+     * @return true, если |a| < |b|
+     */
     bool operator()(int a, int b) const {
         return std::abs(a) < std::abs(b);
     }
 };
 
+/**
+ * @brief Выводит элементы контейнера в стандартный поток вывода.
+ * Использует функциональный подход через std::copy и итераторы.
+ * @param Ссылка на вектор для вывода
+ */
 static void print_vector(const std::vector<int>& v) {
-    for (int x : v) {
-        std::cout << x << ' ';
-    }
+    std::copy(v.begin(), v.end(), std::ostream_iterator<int>(std::cout, " "));
     std::cout << '\n';
 }
+
+/**
+ * @enum InputMode
+ * @brief Перечисление доступных режимов ввода данных.
+ */
+enum InputMode {
+    KEYBOARD = 1,        
+    RANDOM_GENERATED = 2 
+};
 
 int main() {
     setlocale(LC_ALL, "RU");
     std::vector<int> V;
-    enum InputMode {
-        keyboard = 1,
-        random_generated = 2
-    };
 
     std::cout
         << "Способ задания вектора:\n"
-        << "  1 — ввести с клавиатуры\n"
-        << "  2 — сгенерировать случайные целые числа\n"
+        << "  " << KEYBOARD << " — ввести с клавиатуры\n"
+        << "  " << RANDOM_GENERATED << " — сгенерировать случайные целые числа\n"
         << "Выбор: ";
 
-    int mode = 0;
-    std::cin >> mode;
+    int choice = 0;
+    std::cin >> choice;
+    InputMode mode = static_cast<InputMode>(choice);
 
     switch (mode) {
-    case keyboard: {
-        std::cout << "Введите целые числа через пробел\n";
+    case KEYBOARD: {
+        std::cout << "Введите целые числа через пробел (завершите ввод Enter):\n";
         std::string line;
         std::getline(std::cin >> std::ws, line);
         std::istringstream iss(line);
-        int x = 0;
-        while (iss >> x) {
-            V.push_back(x);
-        }
+
+        std::copy(std::istream_iterator<int>(iss),
+            std::istream_iterator<int>(),
+            std::back_inserter(V));
         break;
     }
-    case random_generated: {
+    case RANDOM_GENERATED: {
         std::size_t n = 0;
         int lo = 0;
         int hi = 0;
@@ -56,16 +76,16 @@ int main() {
         std::cin >> n;
         std::cout << "Минимальное и максимальное значение: ";
         std::cin >> lo >> hi;
-        if (lo > hi) {
-            std::swap(lo, hi);
-        }
+        if (lo > hi) std::swap(lo, hi);
+
         V.reserve(n);
         std::random_device rd;
         std::mt19937 gen(rd());
         std::uniform_int_distribution<int> dist(lo, hi);
-        for (std::size_t i = 0; i < n; ++i) {
-            V.push_back(dist(gen));
-        }
+
+        std::generate_n(std::back_inserter(V), n, [&]() {
+            return dist(gen);
+            });
         break;
     }
     default:
