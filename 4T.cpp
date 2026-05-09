@@ -18,7 +18,7 @@ struct less_abs : std::binary_function<int, int, bool> {
      * @param b Второе число
      * @return true, если |a| < |b|
      */
-    bool operator()(int a, int b) const {
+    bool operator()(const int a, const int b) const {
         return std::abs(a) < std::abs(b);
     }
 };
